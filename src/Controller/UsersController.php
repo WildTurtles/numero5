@@ -125,7 +125,7 @@ class UsersController extends AppController
                 $this->Auth->setUser($user);
                 return $this->redirect($this->Auth->redirectUrl());
             }
-            $this->Flash->error('Votre username ou mot de passe est incorrect.');
+            $this->Flash->error('Username or password incorrect.');
         }
     }
     
@@ -137,7 +137,7 @@ class UsersController extends AppController
 
     public function logout()
     {
-        $this->Flash->success('Vous êtes maintenant déconnecté.');
+        $this->Flash->success('You are offline.');
         return $this->redirect($this->Auth->logout());
     }
 }

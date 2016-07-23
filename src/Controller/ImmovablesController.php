@@ -115,4 +115,26 @@ class ImmovablesController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+    
+    public function isAuthorized($user)
+    {
+        $action = $this->request->params['action'];
+
+        // Add et index sont toujours permises.
+        if (in_array($action, ['index', 'add', 'tags'])) {
+            return true;
+        }
+        // Tout autre action nécessite un id.
+        if (empty($this->request->params['pass'][0])) {
+            return false;
+        }
+
+        // Vérifie que le bookmark appartient à l'utilisateur courant.
+        $id = $this->request->params['pass'][0];
+        $immovable = $this->Immovables->get($id);
+        if ($immovable->user_id == $user['id']) {
+            return true;
+        }
+        return parent::isAuthorized($user);
+    }
 }

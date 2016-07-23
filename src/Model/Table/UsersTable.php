@@ -56,11 +56,11 @@ class UsersTable extends Table
     public function validationDefault(Validator $validator)
     {
         return $validator
-        ->notEmpty('name', "Un nom d'utilisateur est nécessaire")
-        ->notEmpty('firstname', "Un prénom d'utilisateur est nécessaire")
-        ->notEmpty('address', "Un prénom d'utilisateur est nécessaire")
-        ->notEmpty('email', "Un prénom d'utilisateur est nécessaire")
-        ->notEmpty('password', 'Un mot de passe est nécessaire');
+        ->notEmpty('name', "A name is necessary")
+        ->notEmpty('firstname', "A firstname is necessary")
+        ->notEmpty('address', "An address is necessary")
+        ->notEmpty('email', "An e mail is necessary")
+        ->notEmpty('password', 'A password is necessary');
     }
 
     /**

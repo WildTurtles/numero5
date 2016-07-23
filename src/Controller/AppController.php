@@ -54,7 +54,8 @@ class AppController extends Controller
             'loginAction' => [
                 'controller' => 'Users',
                 'action' => 'login'
-            ]
+            ],
+            'unauthorizedRedirect' => $this->referer()
         ]);
 
         // Autorise l'action display pour que notre controller de pages
@@ -76,4 +77,15 @@ class AppController extends Controller
             $this->set('_serialize', true);
         }
     }
+    
+    public function isAuthorized($user)
+    {
+        return false;
+    }
+    
+    public function beforeFilter(Event $event)
+    {
+        $this->Auth->allow(['login']);
+    }
+    
 }
