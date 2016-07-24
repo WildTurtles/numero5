@@ -121,7 +121,7 @@ class ImmovablesController extends AppController
         $action = $this->request->params['action'];
 
         // Add et index sont toujours permises.
-        if (in_array($action, ['index', 'add', 'tags'])) {
+        if (in_array($action, ['index', 'add'])) {
             return true;
         }
         // Tout autre action nécessite un id.

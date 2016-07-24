@@ -40,6 +40,9 @@
             <?= $this->Paginator->numbers() ?>
             <?= $this->Paginator->next(__('next') . ' >') ?>
         </ul>
+        
+        <?= $this->Form->postButton(__('Enregistrer un nouveau locataire'), ['controller' => 'Tenants', 'action' => 'add']); ?>
+        
         <p><?= $this->Paginator->counter() ?></p>
     </div>
 </div>
