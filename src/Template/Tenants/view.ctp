@@ -24,6 +24,12 @@
             <th><?= __('Email') ?></th>
             <td><?= h($tenant->email) ?></td>
         </tr>
+        
+        <tr>
+            <th><?= __('User') ?></th>
+            <td><?= $tenant->has('user') ? $this->Html->link($tenant->user->name, ['controller' => 'Users', 'action' => 'view', $tenant->user->id]) : '' ?></td>
+        </tr>
+        
         <tr>
             <th><?= __('Id') ?></th>
             <td><?= $this->Number->format($tenant->id) ?></td>

@@ -7,6 +7,7 @@ use Cake\ORM\Entity;
  * Immovable Entity
  *
  * @property int $id
+ * @property string $name
  * @property string $description
  * @property string $address
  * @property int $rental
@@ -17,7 +18,6 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\Rental[] $rentals
  * @property \App\Model\Entity\Tax[] $taxes
  * @property \App\Model\Entity\Tenant[] $tenants
- * @property \App\Model\Entity\ImmovablesTenant[] $immovables_tenants
  */
 class Immovable extends Entity
 {

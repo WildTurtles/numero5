@@ -13,6 +13,7 @@
         <legend><?= __('Add Immovable') ?></legend>
         <?php
             echo $this->Form->input('address');
+            echo $this->Form->input('name');
             echo $this->Form->input('description');
             echo $this->Form->input('rental');
             echo $this->Form->input('rented');

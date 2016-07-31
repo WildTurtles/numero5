@@ -69,6 +69,10 @@ class ImmovablesTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
+            ->requirePresence('name', 'create')
+            ->notEmpty('name');
+
+        $validator
             ->allowEmpty('description');
 
         $validator

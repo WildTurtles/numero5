@@ -10,9 +10,10 @@ use Cake\ORM\Entity;
  * @property string $name
  * @property string $firstname
  * @property string $email
+ * @property int $user_id
  *
+ * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\Immovable[] $immovables
- * @property \App\Model\Entity\ImmovablesTenant[] $immovables_tenants
  */
 class Tenant extends Entity
 {

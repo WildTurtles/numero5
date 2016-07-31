@@ -9,6 +9,7 @@ use Cake\Validation\Validator;
 /**
  * Tenants Model
  *
+ * @property \Cake\ORM\Association\BelongsTo $Users
  * @property \Cake\ORM\Association\BelongsToMany $Immovables
  *
  * @method \App\Model\Entity\Tenant get($primaryKey, $options = [])
@@ -36,6 +37,10 @@ class TenantsTable extends Table
         $this->displayField('name');
         $this->primaryKey('id');
 
+        $this->belongsTo('Users', [
+            'foreignKey' => 'user_id',
+            'joinType' => 'INNER'
+        ]);
         $this->belongsToMany('Immovables', [
             'foreignKey' => 'tenant_id',
             'targetForeignKey' => 'immovable_id',
@@ -81,6 +86,7 @@ class TenantsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->isUnique(['email']));
+        $rules->add($rules->existsIn(['user_id'], 'Users'));
 
         return $rules;
     }

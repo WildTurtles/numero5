@@ -18,10 +18,20 @@ class ImmovablesController extends AppController
      */
     public function index()
     {
+//         $immovable = $this->Immovables->find('all');
+//         debug ($immovable);
+//         exit(); 
+        ///////////
         $this->paginate = [
             'contain' => ['Users']
         ];
-        $immovables = $this->paginate($this->Immovables);
+        //find the user's id
+        $user = $this->Auth->user('id');
+        //select immovables 
+        $immo = $this->Immovables->find ('all', array ('conditions' => array ('Immovables.user_id' => $user)));
+
+        $immovables = $this->paginate($immo);
+        
 
         $this->set(compact('immovables'));
         $this->set('_serialize', ['immovables']);
@@ -36,6 +46,8 @@ class ImmovablesController extends AppController
      */
     public function view($id = null)
     {
+         
+        ///////////
         $immovable = $this->Immovables->get($id, [
             'contain' => ['Users', 'Tenants', 'Rentals', 'Taxes']
         ]);
@@ -52,13 +64,18 @@ class ImmovablesController extends AppController
     public function add()
     {
         $immovable = $this->Immovables->newEntity();
-        if ($this->request->is('post')) {
+        if ($this->request->is('post')) 
+        {
             $immovable = $this->Immovables->patchEntity($immovable, $this->request->data);
-            if ($this->Immovables->save($immovable)) {
+            $immovable->user_id = $this->Auth->user('id');
+            if ($this->Immovables->save($immovable)) 
+            {
                 $this->Flash->success(__('The immovable has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
-            } else {
+            } 
+            else 
+            {
                 $this->Flash->error(__('The immovable could not be saved. Please, try again.'));
             }
         }
@@ -116,25 +133,60 @@ class ImmovablesController extends AppController
         return $this->redirect(['action' => 'index']);
     }
     
+//     public function isAuthorized($user)
+//     {
+//         $action = $this->request->params['action'];
+// 
+//         
+//         // Tout autre action nécessite un id.
+//         if (empty($this->request->params['pass'][0])) 
+//         {
+//             return false;
+//         }
+// 
+// //         // Vérifie que le bookmark appartient à l'utilisateur courant.
+//         $id = $this->request->params['pass'][0];
+//         $immovable = $this->Immovables->get($id);
+//         
+//         if ($immovable->user_id == $user['id']) 
+//         {
+//             return true;
+//         }
+//         
+//         if (in_array($this->request->action, ['edit', 'delete', 'view', 'add'])) 
+//         {
+//                 $immovable = (int)$this->request->params['pass'][0];
+//     
+//                 if ($this->Immovables->isOwnedBy($immovable, $user['id'])) 
+//                 {
+//                     return true;
+//                 }
+//         }
+//         return parent::isAuthorized($user);
+//     }
+    
+    
     public function isAuthorized($user)
     {
-        $action = $this->request->params['action'];
-
-        // Add et index sont toujours permises.
-        if (in_array($action, ['index', 'add'])) {
+        // Tous les utilisateurs enregistrés peuvent ajouter des articles
+        if ($this->request->action === 'add') 
+        {
             return true;
         }
-        // Tout autre action nécessite un id.
-        if (empty($this->request->params['pass'][0])) {
-            return false;
-        }
 
-        // Vérifie que le bookmark appartient à l'utilisateur courant.
-        $id = $this->request->params['pass'][0];
-        $immovable = $this->Immovables->get($id);
-        if ($immovable->user_id == $user['id']) {
-            return true;
+        if (in_array($this->request->action, ['edit', 'delete', 'view'])) 
+        {
+            $immoId = (int)$this->request->params['pass'][0];
+            $immovable = $this->Immovables->find('all');
+                
+            if ($this->Immovables->isOwnedBy($immovable['user_id'], $user['id'])) 
+            {
+                return true;
+            }
         }
         return parent::isAuthorized($user);
     }
+
+
+
 }

@@ -10,6 +10,7 @@ use Cake\Validation\Validator;
  * Users Model
  *
  * @property \Cake\ORM\Association\HasMany $Immovables
+ * @property \Cake\ORM\Association\HasMany $Tenants
  * @property \Cake\ORM\Association\BelongsToMany $Groups
  *
  * @method \App\Model\Entity\User get($primaryKey, $options = [])
@@ -40,6 +41,9 @@ class UsersTable extends Table
         $this->hasMany('Immovables', [
             'foreignKey' => 'user_id'
         ]);
+        $this->hasMany('Tenants', [
+            'foreignKey' => 'user_id'
+        ]);
         $this->belongsToMany('Groups', [
             'foreignKey' => 'user_id',
             'targetForeignKey' => 'group_id',
@@ -55,12 +59,32 @@ class UsersTable extends Table
      */
     public function validationDefault(Validator $validator)
     {
-        return $validator
-        ->notEmpty('name', "A name is necessary")
-        ->notEmpty('firstname', "A firstname is necessary")
-        ->notEmpty('address', "An address is necessary")
-        ->notEmpty('email', "An e mail is necessary")
-        ->notEmpty('password', 'A password is necessary');
+        $validator
+            ->integer('id')
+            ->allowEmpty('id', 'create');
+
+        $validator
+            ->requirePresence('name', 'create')
+            ->notEmpty('name');
+
+        $validator
+            ->requirePresence('firstname', 'create')
+            ->notEmpty('firstname');
+
+        $validator
+            ->requirePresence('address', 'create')
+            ->notEmpty('address');
+
+        $validator
+            ->email('email')
+            ->requirePresence('email', 'create')
+            ->notEmpty('email');
+
+        $validator
+            ->requirePresence('password', 'create')
+            ->notEmpty('password');
+
+        return $validator;
     }
 
     /**

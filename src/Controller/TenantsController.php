@@ -18,6 +18,9 @@ class TenantsController extends AppController
      */
     public function index()
     {
+        $this->paginate = [
+            'contain' => ['Users']
+        ];
         $tenants = $this->paginate($this->Tenants);
 
         $this->set(compact('tenants'));
@@ -34,7 +37,7 @@ class TenantsController extends AppController
     public function view($id = null)
     {
         $tenant = $this->Tenants->get($id, [
-            'contain' => ['Immovables']
+            'contain' => ['Users', 'Immovables']
         ]);
 
         $this->set('tenant', $tenant);
@@ -49,8 +52,10 @@ class TenantsController extends AppController
     public function add()
     {
         $tenant = $this->Tenants->newEntity();
-        if ($this->request->is('post')) {
+        if ($this->request->is('post')) 
+        {
             $tenant = $this->Tenants->patchEntity($tenant, $this->request->data);
+            $tenant->user_id = $this->Auth->user('id');
             if ($this->Tenants->save($tenant)) {
                 $this->Flash->success(__('The tenant has been saved.'));
 
@@ -59,8 +64,9 @@ class TenantsController extends AppController
                 $this->Flash->error(__('The tenant could not be saved. Please, try again.'));
             }
         }
+        $users = $this->Tenants->Users->find('list', ['limit' => 200]);
         $immovables = $this->Tenants->Immovables->find('list', ['limit' => 200]);
-        $this->set(compact('tenant', 'immovables'));
+        $this->set(compact('tenant', 'users', 'immovables'));
         $this->set('_serialize', ['tenant']);
     }
 
@@ -86,8 +92,9 @@ class TenantsController extends AppController
                 $this->Flash->error(__('The tenant could not be saved. Please, try again.'));
             }
         }
+        $users = $this->Tenants->Users->find('list', ['limit' => 200]);
         $immovables = $this->Tenants->Immovables->find('list', ['limit' => 200]);
-        $this->set(compact('tenant', 'immovables'));
+        $this->set(compact('tenant', 'users', 'immovables'));
         $this->set('_serialize', ['tenant']);
     }
 
