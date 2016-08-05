@@ -18,10 +18,6 @@ class ImmovablesController extends AppController
      */
     public function index()
     {
-//         $immovable = $this->Immovables->find('all');
-//         debug ($immovable);
-//         exit(); 
-        ///////////
         $this->paginate = [
             'contain' => ['Users']
         ];

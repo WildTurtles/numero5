@@ -16,6 +16,7 @@
         <thead>
             <tr>
                 <th><?= $this->Paginator->sort('id') ?></th>
+                <th><?= $this->Paginator->sort('name') ?></th>
                 <th><?= $this->Paginator->sort('description') ?></th>
                 <th><?= $this->Paginator->sort('address') ?></th>
                 <th><?= $this->Paginator->sort('rental') ?></th>
@@ -28,6 +29,7 @@
             <?php foreach ($immovables as $immovable): ?>
             <tr>
                 <td><?= $this->Number->format($immovable->id) ?></td>
+                <td><?= h($immovable->name) ?></td>
                 <td><?= h($immovable->description) ?></td>
                 <td><?= h($immovable->address) ?></td>
                 <td><?= $this->Number->format($immovable->rental) ?></td>

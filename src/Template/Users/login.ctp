@@ -5,4 +5,5 @@
 <?= $this->Form->button('Login') ?>
 <?= $this->Form->end() ?>
 
-<?= $this->Form->postButton(__('Enregistrer'), ['controller' => 'Users', 'action' => 'add']); ?>
+
+<?= $this->Html->link(__('Enregistrer'), ['action' => 'add']) ?>

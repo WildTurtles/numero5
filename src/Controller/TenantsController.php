@@ -21,7 +21,13 @@ class TenantsController extends AppController
         $this->paginate = [
             'contain' => ['Users']
         ];
-        $tenants = $this->paginate($this->Tenants);
+        
+        //find the user's id
+        $user = $this->Auth->user('id');
+        //select immovables 
+        $immo = $this->Tenants->find ('all', array ('conditions' => array ('Tenants.user_id' => $user)));
+        
+        $tenants = $this->paginate($immo);
 
         $this->set(compact('tenants'));
         $this->set('_serialize', ['tenants']);

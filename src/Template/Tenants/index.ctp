@@ -41,7 +41,7 @@
             <?= $this->Paginator->next(__('next') . ' >') ?>
         </ul>
         
-        <?= $this->Form->postButton(__('Enregistrer un nouveau locataire'), ['controller' => 'Tenants', 'action' => 'add']); ?>
+       <?= $this->Html->link(__('Enregistrer un nouveau locataire'), ['action' => 'add']) ?>
         
         <p><?= $this->Paginator->counter() ?></p>
     </div>

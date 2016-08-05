@@ -3,6 +3,8 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\Event\Event;
+use Cake\Core\Configure;
+
 /**
  * Users Controller
  *
@@ -139,4 +141,6 @@ class UsersController extends AppController
         $this->Flash->success('You are offline.');
         return $this->redirect($this->Auth->logout());
     }
+    
+    
 }

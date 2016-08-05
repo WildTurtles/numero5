@@ -1,0 +1,4 @@
+[submodule "Plugin/Paypal"]
+	path = Plugin/Paypal
+	url = git://github.com/robmcvey/cakephp-paypal.git
+	branch = master
