@@ -1,13 +1,14 @@
-<?php $this->set('title_for_layout', "abonner au site");?>
-
-<?php echo $this->Form->create('User'); ?> 
+<div class="users index large-9 medium-8 columns content">
+<?php $this->set('title_for_layout', "S'abonner au site"); ?>
  
-<?php foreach (Configure::read('Site.prices') as $k => $v): ?>
-     <label class="checkbox">
-         <input type="chekbox" value="<?php echo $k; ?>">
-         <?php echo $k; ?> mois, <?php echo $v; ?> €
-     <\label>
-    <?php endforeach ?>
-    
-    
-<?php echo $this->Form->end("Abonnement"); ?>
+<?php echo $this->Form->create(); ?>
+<?php foreach ($prices as $k => $v): ?>
+   <input type="radio" name="duration" value="<?php echo $k?>">
+   <label class="radio" for="<?php echo $v?>">
+   <?php echo __("{0,plural, =1{1 month} other{# mouths} },"
+           . " {1,number,currency}  ",[$k,$v]);  ?>
+   </label><br>
+<?php endforeach ?>
+<?php echo $this->Form->button('Submit');?>
+<?php echo $this->Form->end(); ?>
+</div>
