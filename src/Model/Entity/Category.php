@@ -8,6 +8,8 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $desc
+ * @property \Cake\I18n\Time $created
+ * @property \Cake\I18n\Time $updated
  *
  * @property \App\Model\Entity\Tax[] $taxes
  */

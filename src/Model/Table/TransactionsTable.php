@@ -7,22 +7,21 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * Taxes Model
+ * Transactions Model
  *
- * @property \Cake\ORM\Association\BelongsTo $Immovables
- * @property \Cake\ORM\Association\BelongsToMany $Categories
+ * @property \Cake\ORM\Association\BelongsTo $Users
  *
- * @method \App\Model\Entity\Tax get($primaryKey, $options = [])
- * @method \App\Model\Entity\Tax newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\Tax[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Tax|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Tax patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\Tax[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\Tax findOrCreate($search, callable $callback = null)
+ * @method \App\Model\Entity\Transaction get($primaryKey, $options = [])
+ * @method \App\Model\Entity\Transaction newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\Transaction[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\Transaction|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Transaction patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\Transaction[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\Transaction findOrCreate($search, callable $callback = null)
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class TaxesTable extends Table
+class TransactionsTable extends Table
 {
 
     /**
@@ -35,20 +34,15 @@ class TaxesTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('taxes');
+        $this->table('transactions');
         $this->displayField('id');
         $this->primaryKey('id');
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('Immovables', [
-            'foreignKey' => 'immovable_id',
+        $this->belongsTo('Users', [
+            'foreignKey' => 'user_id',
             'joinType' => 'INNER'
-        ]);
-        $this->belongsToMany('Categories', [
-            'foreignKey' => 'tax_id',
-            'targetForeignKey' => 'category_id',
-            'joinTable' => 'taxes_categories'
         ]);
     }
 
@@ -65,9 +59,14 @@ class TaxesTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->integer('amount')
-            ->requirePresence('amount', 'create')
-            ->notEmpty('amount');
+            ->integer('price')
+            ->requirePresence('price', 'create')
+            ->notEmpty('price');
+
+        $validator
+            ->integer('taxe')
+            ->requirePresence('taxe', 'create')
+            ->notEmpty('taxe');
 
         return $validator;
     }
@@ -81,7 +80,7 @@ class TaxesTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['immovable_id'], 'Immovables'));
+        $rules->add($rules->existsIn(['user_id'], 'Users'));
 
         return $rules;
     }

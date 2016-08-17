@@ -18,6 +18,8 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\TypeRent patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\TypeRent[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\TypeRent findOrCreate($search, callable $callback = null)
+ *
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class TypeRentsTable extends Table
 {
@@ -35,6 +37,8 @@ class TypeRentsTable extends Table
         $this->table('type_rents');
         $this->displayField('id');
         $this->primaryKey('id');
+
+        $this->addBehavior('Timestamp');
 
         $this->hasMany('Rents', [
             'foreignKey' => 'type_rent_id'

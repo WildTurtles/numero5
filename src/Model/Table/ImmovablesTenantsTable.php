@@ -19,6 +19,8 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\ImmovablesTenant patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\ImmovablesTenant[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\ImmovablesTenant findOrCreate($search, callable $callback = null)
+ *
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class ImmovablesTenantsTable extends Table
 {
@@ -36,6 +38,8 @@ class ImmovablesTenantsTable extends Table
         $this->table('immovables_tenants');
         $this->displayField('id');
         $this->primaryKey('id');
+
+        $this->addBehavior('Timestamp');
 
         $this->belongsTo('Immovables', [
             'foreignKey' => 'immovable_id',
@@ -60,11 +64,11 @@ class ImmovablesTenantsTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->dateTime('date_end')
+            ->date('date_end')
             ->allowEmpty('date_end');
 
         $validator
-            ->dateTime('date_begin')
+            ->date('date_begin')
             ->allowEmpty('date_begin');
 
         return $validator;

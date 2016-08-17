@@ -11,6 +11,7 @@ use Cake\Validation\Validator;
  *
  * @property \Cake\ORM\Association\HasMany $Immovables
  * @property \Cake\ORM\Association\HasMany $Tenants
+ * @property \Cake\ORM\Association\HasMany $Transactions
  * @property \Cake\ORM\Association\BelongsToMany $Groups
  *
  * @method \App\Model\Entity\User get($primaryKey, $options = [])
@@ -20,6 +21,8 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\User patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\User[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\User findOrCreate($search, callable $callback = null)
+ *
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class UsersTable extends Table
 {
@@ -38,10 +41,15 @@ class UsersTable extends Table
         $this->displayField('name');
         $this->primaryKey('id');
 
+        $this->addBehavior('Timestamp');
+
         $this->hasMany('Immovables', [
             'foreignKey' => 'user_id'
         ]);
         $this->hasMany('Tenants', [
+            'foreignKey' => 'user_id'
+        ]);
+        $this->hasMany('Transactions', [
             'foreignKey' => 'user_id'
         ]);
         $this->belongsToMany('Groups', [
@@ -73,7 +81,8 @@ class UsersTable extends Table
 
         $validator
             ->requirePresence('address', 'create')
-            ->notEmpty('address');
+            ->notEmpty('address')
+            ->add('address', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
             ->email('email')
@@ -83,6 +92,11 @@ class UsersTable extends Table
         $validator
             ->requirePresence('password', 'create')
             ->notEmpty('password');
+
+        $validator
+            ->dateTime('end_subcription')
+            ->requirePresence('end_subcription', 'create')
+            ->notEmpty('end_subcription');
 
         return $validator;
     }
@@ -97,6 +111,7 @@ class UsersTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->isUnique(['email']));
+        $rules->add($rules->isUnique(['address']));
 
         return $rules;
     }

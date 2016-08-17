@@ -9,6 +9,8 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $tax_id
  * @property int $category_id
+ * @property \Cake\I18n\Time $created
+ * @property \Cake\I18n\Time $updated
  *
  * @property \App\Model\Entity\Tax $tax
  * @property \App\Model\Entity\Category $category

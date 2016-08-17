@@ -13,9 +13,13 @@ use Cake\ORM\Entity;
  * @property string $address
  * @property string $email
  * @property string $password
+ * @property \Cake\I18n\Time $end_subcription
+ * @property \Cake\I18n\Time $created
+ * @property \Cake\I18n\Time $updated
  *
  * @property \App\Model\Entity\Immovable[] $immovables
  * @property \App\Model\Entity\Tenant[] $tenants
+ * @property \App\Model\Entity\Transaction[] $transactions
  * @property \App\Model\Entity\Group[] $groups
  */
 class User extends Entity

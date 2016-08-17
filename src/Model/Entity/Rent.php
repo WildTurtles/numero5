@@ -12,6 +12,8 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\Time $date
  * @property int $type_rent_id
  * @property int $rental_id
+ * @property \Cake\I18n\Time $created
+ * @property \Cake\I18n\Time $updated
  *
  * @property \App\Model\Entity\TypeRent $type_rent
  * @property \App\Model\Entity\Rental $rental

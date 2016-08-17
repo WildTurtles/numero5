@@ -9,10 +9,11 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $amount
  * @property int $immovable_id
+ * @property \Cake\I18n\Time $created
+ * @property \Cake\I18n\Time $updated
  *
  * @property \App\Model\Entity\Immovable $immovable
  * @property \App\Model\Entity\Category[] $categories
- * @property \App\Model\Entity\TaxCategories[] $taxes_categories
  */
 class Tax extends Entity
 {

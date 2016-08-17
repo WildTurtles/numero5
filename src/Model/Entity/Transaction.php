@@ -4,20 +4,18 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * ImmovablesTenant Entity
+ * Transaction Entity
  *
  * @property int $id
- * @property \Cake\I18n\Time $date_end
- * @property \Cake\I18n\Time $date_begin
- * @property int $immovable_id
- * @property int $tenant_id
+ * @property int $price
+ * @property int $taxe
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $updated
+ * @property int $user_id
  *
- * @property \App\Model\Entity\Immovable $immovable
- * @property \App\Model\Entity\Tenant $tenant
+ * @property \App\Model\Entity\User $user
  */
-class ImmovablesTenant extends Entity
+class Transaction extends Entity
 {
 
     /**

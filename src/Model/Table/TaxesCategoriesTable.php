@@ -19,6 +19,8 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\TaxCategories patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\TaxCategories[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\TaxCategories findOrCreate($search, callable $callback = null)
+ *
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class TaxesCategoriesTable extends Table
 {
@@ -36,6 +38,8 @@ class TaxesCategoriesTable extends Table
         $this->table('taxes_categories');
         $this->displayField('id');
         $this->primaryKey('id');
+
+        $this->addBehavior('Timestamp');
 
         $this->belongsTo('Taxes', [
             'foreignKey' => 'tax_id',

@@ -13,6 +13,8 @@ use Cake\ORM\Entity;
  * @property int $rental
  * @property bool $rented
  * @property int $user_id
+ * @property \Cake\I18n\Time $created
+ * @property \Cake\I18n\Time $updated
  *
  * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\Rental[] $rentals

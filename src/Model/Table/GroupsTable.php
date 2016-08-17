@@ -18,6 +18,8 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Group patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Group[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\Group findOrCreate($search, callable $callback = null)
+ *
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class GroupsTable extends Table
 {
@@ -35,6 +37,8 @@ class GroupsTable extends Table
         $this->table('groups');
         $this->displayField('id');
         $this->primaryKey('id');
+
+        $this->addBehavior('Timestamp');
 
         $this->belongsToMany('Users', [
             'foreignKey' => 'group_id',

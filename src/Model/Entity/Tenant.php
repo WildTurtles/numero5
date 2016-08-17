@@ -11,6 +11,8 @@ use Cake\ORM\Entity;
  * @property string $firstname
  * @property string $email
  * @property int $user_id
+ * @property \Cake\I18n\Time $created
+ * @property \Cake\I18n\Time $updated
  *
  * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\Immovable[] $immovables

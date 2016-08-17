@@ -8,6 +8,10 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $type
+ * @property \Cake\I18n\Time $created
+ * @property \Cake\I18n\Time $updated
+ *
+ * @property \App\Model\Entity\Rent[] $rents
  */
 class TypeRent extends Entity
 {
