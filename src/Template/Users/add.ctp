@@ -8,7 +8,7 @@
             echo $this->Form->input('address');
             echo $this->Form->input('email');
             echo $this->Form->input('password');
-           
+            echo $this->Form->input('end_subcription');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
