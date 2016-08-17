@@ -13,6 +13,10 @@
     <h3><?= h($transaction->id) ?></h3>
     <table class="vertical-table">
         <tr>
+            <th><?= __('Transaction Name') ?></th>
+            <td><?= h($transaction->transaction_name) ?></td>
+        </tr>
+        <tr>
             <th><?= __('User') ?></th>
             <td><?= $transaction->has('user') ? $this->Html->link($transaction->user->name, ['controller' => 'Users', 'action' => 'view', $transaction->user->id]) : '' ?></td>
         </tr>

@@ -7,6 +7,7 @@ use Cake\ORM\Entity;
  * Transaction Entity
  *
  * @property int $id
+ * @property string $transaction_name
  * @property int $price
  * @property int $taxe
  * @property \Cake\I18n\Time $created

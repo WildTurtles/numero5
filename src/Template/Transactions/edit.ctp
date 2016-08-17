@@ -17,6 +17,7 @@
     <fieldset>
         <legend><?= __('Edit Transaction') ?></legend>
         <?php
+            echo $this->Form->input('transaction_name');
             echo $this->Form->input('price');
             echo $this->Form->input('taxe');
             echo $this->Form->input('user_id', ['options' => $users]);

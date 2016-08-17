@@ -59,6 +59,10 @@ class TransactionsTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
+            ->requirePresence('transaction_name', 'create')
+            ->notEmpty('transaction_name');
+
+        $validator
             ->integer('price')
             ->requirePresence('price', 'create')
             ->notEmpty('price');

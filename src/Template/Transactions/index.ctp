@@ -12,6 +12,7 @@
         <thead>
             <tr>
                 <th><?= $this->Paginator->sort('id') ?></th>
+                <th><?= $this->Paginator->sort('transaction_name') ?></th>
                 <th><?= $this->Paginator->sort('price') ?></th>
                 <th><?= $this->Paginator->sort('taxe') ?></th>
                 <th><?= $this->Paginator->sort('created') ?></th>
@@ -24,6 +25,7 @@
             <?php foreach ($transactions as $transaction): ?>
             <tr>
                 <td><?= $this->Number->format($transaction->id) ?></td>
+                <td><?= h($transaction->transaction_name) ?></td>
                 <td><?= $this->Number->format($transaction->price) ?></td>
                 <td><?= $this->Number->format($transaction->taxe) ?></td>
                 <td><?= h($transaction->created) ?></td>

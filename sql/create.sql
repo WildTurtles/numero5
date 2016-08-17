@@ -8,7 +8,7 @@ CREATE TABLE RENTS (id SERIAL NOT NULL, account int4 NOT NULL, paid bool, "date"
 CREATE TABLE TAXES (id SERIAL NOT NULL, amount int4 NOT NULL, IMMOVABLE_id int4 NOT NULL, created timestamp NOT NULL, updated timestamp, PRIMARY KEY (id));
 CREATE TABLE TAXES_CATEGORIES (id SERIAL NOT NULL, TAX_id int4 NOT NULL, CATEGORY_id int4 NOT NULL, created timestamp NOT NULL, updated timestamp, PRIMARY KEY (id));
 CREATE TABLE TENANTS (id SERIAL NOT NULL, name varchar(255) NOT NULL, firstname varchar(255) NOT NULL, email varchar(255) NOT NULL, USER_id int4 NOT NULL, created timestamp NOT NULL, updated timestamp, PRIMARY KEY (id));
-CREATE TABLE TRANSACTIONS (id SERIAL NOT NULL, price int4 NOT NULL, taxe int4 NOT NULL, created timestamp NOT NULL, updated timestamp, USER_id int4 NOT NULL, PRIMARY KEY (id));
+CREATE TABLE TRANSACTIONS (id SERIAL NOT NULL, transaction_name varchar(255) NOT NULL, price int4 NOT NULL, taxe int4 NOT NULL, created timestamp NOT NULL, updated timestamp, USER_id int4 NOT NULL, PRIMARY KEY (id));
 CREATE TABLE TYPE_RENTS (id SERIAL NOT NULL, type varchar(255), created timestamp NOT NULL, updated timestamp, PRIMARY KEY (id));
 CREATE TABLE USERS (id SERIAL NOT NULL, name varchar(255) NOT NULL, firstname varchar(255) NOT NULL, address varchar(255) NOT NULL, email varchar(255) NOT NULL, password varchar(255) NOT NULL, end_subcription timestamp NOT NULL, created timestamp NOT NULL, updated timestamp, PRIMARY KEY (id));
 CREATE UNIQUE INDEX USERS_address ON USERS (address);
