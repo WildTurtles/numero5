@@ -167,7 +167,7 @@ class UsersController extends AppController {
                     'BUTTONCODE' => 'HOSTED',
                     'BUTTONTYPE' => 'BUYNOW',
                     'BUTTONSUBTYPE' => 'SERVICES',
-                    'L_BUTTONVAR0' => 'business=' . Configure::read('Paypal.mail'),
+                    'L_BUTTONVAR0' => 'business='.Configure::read('Paypal.email'),
                     'L_BUTTONVAR1' => "item_name=$item_name",
                     'L_BUTTONVAR2' => "amount=$price",
                     'L_BUTTONVAR3' => 'currency_code=EUR',
