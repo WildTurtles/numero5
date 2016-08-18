@@ -9,6 +9,7 @@ use Cake\Core\Configure\Engine\PhpConfig;
 use Cake\Routing\Router;
 use Cake\Log\Log;
 use Cake\ORM\TableRegistry;
+use Cake\I18n\Time;
 
 /**
  * Paypals Controller
@@ -110,7 +111,8 @@ class PaypalsController extends AppController {
                                         $transaction = $transactions->newEntity($transaction_data);
 
                                         $this->User->id = $uid;
-                                        $date = new DateTime();
+                                        //Log::write(LOG_ERR, "UUID de l'utilisateur ".$this->User->id);
+                                        $date = new Date();
                                         $date->add(new DateInterval("P" . $duration . "M"));
                                         $this->User->saveField('end_subcription', $date->format('Y-m-d H:i:s'));
 
