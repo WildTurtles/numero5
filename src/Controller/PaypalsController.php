@@ -9,7 +9,7 @@ use Cake\Core\Configure\Engine\PhpConfig;
 use Cake\Routing\Router;
 use Cake\Log\Log;
 use Cake\ORM\TableRegistry;
-use Cake\I18n\Time;
+use Cake\I18n\Date;
 
 /**
  * Paypals Controller
