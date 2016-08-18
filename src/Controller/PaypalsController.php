@@ -12,8 +12,7 @@ use Cake\ORM\TableRegistry;
 use Cake\I18n\Date;
 use App\Model\Entity\Transaction;
 use App\Model\Entity\User;
-class Cake\ORM\Table;
-
+use Cake\ORM\Table;
 
 
 
