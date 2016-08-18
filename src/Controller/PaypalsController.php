@@ -127,7 +127,7 @@ class PaypalsController extends AppController {
                                         //$now->modify('+5 days');
                                         
                                         //$date->add(new DateInterval("P" . $duration . "M"));
-                                        $this->User->saveField('end_subcription', $date->format('Y-m-d H:i:s'));
+                                        $user->end_subcription($date->format('Y-m-d H:i:s'));
 
                                         //Log::write(LOG_ERR, $this->request->data);
 
