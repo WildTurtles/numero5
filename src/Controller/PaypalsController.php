@@ -12,8 +12,7 @@ use Cake\ORM\TableRegistry;
 use Cake\I18n\Date;
 use App\Model\Entity\Transaction;
 use App\Model\Entity\User;
-class Cake\ORM\Table;
-
+use Cake\ORM\Table;
 
 
 
@@ -106,20 +105,24 @@ class PaypalsController extends AppController {
                                     $uid = $custom['uuid'];
                                     if ($payment_witout_tax == Configure::read("Site.prices.$duration")) {
                                         Log::write(LOG_ERR, "Le montant  correspond à un montant existant.");
-                                        $transaction_data = [
-                                            'transaction_name' => $txn_id,
-                                            'price' => $payment_amount,
-                                            'taxe' => "$payment_tax",
-                                            'user_id' => "$uid",
-                                        ];
+
 /*
                                         $transactions = TableRegistry::get('Transactions');
                                         $transaction = $transactions->newEntity($transaction_data);*/
                                         
-                                        $transaction = $this->Transactions->newEntity($transaction_data);
-                                        Log::write(LOG_ERR, "Transaction ".$user);
+                                        //$transaction = $this->Transactions->newEntity();
+                                        $transaction = new Transaction([
+                                            'transaction_name' => $txn_id,
+                                            'price' => $payment_amount,
+                                            'taxe' => "$payment_tax",
+                                            'user_id' => "$uid",
+                                        ]);
+                                        Log::write(LOG_ERR, "Transaction ".$transaction);
                                        
-                                        $user = $this->Users->get($uid);
+                                        $this->loadModel('Users','Transactions');
+                                        
+                                        $user = new User();
+                                        $user = $users->get($uid);
 
                                         
                                         Log::write(LOG_ERR, "Utilisateur ".$user);
@@ -133,7 +136,7 @@ class PaypalsController extends AppController {
                                         //$now->modify('+5 days');
                                         
                                         //$date->add(new DateInterval("P" . $duration . "M"));
-                                        $user->end_subcription($date->format('Y-m-d H:i:s'));
+                                        $user->set('end_subcription', $date->format('Y-m-d H:i:s'));
 
                                         //Log::write(LOG_ERR, $this->request->data);
 
