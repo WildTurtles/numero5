@@ -8,6 +8,7 @@ use Cake\Core\Configure;
 use Cake\Core\Configure\Engine\PhpConfig;
 use Cake\Routing\Router;
 use Cake\Log\Log;
+use Cake\ORM\Table;
 
 /**
  * Paypals Controller
@@ -28,68 +29,124 @@ class PaypalsController extends AppController {
 
     public function notify() {
 
-
         if ($this->request->is('post')) {
-            Log::write(LOG_ERR, $this->request->data);
-        }
+            Log::write(LOG_ERR, "Request is post");
 
-
-        $email_account = Configure::read('Paypal.email');
-        Log::write(LOG_ERR, $email_account);
-        Log::write(LOG_ERR, $_POST);
-
-
-//        $req = 'cmd=_notify-validate';
-//        foreach ($_POST as $key => $value) {
-//            $value = urlencode(stripslashes($value));
-//            $req .= "&$key=$value";
-//        }
-//        $header = "POST /cgi-bin/webscr HTTP/1.0\r\n";
-//        $header .= "Host: www.". Configure::read('Paypal.sandbox').".paypal.com\r\n";
-//        $header .= "Content-Type: application/x-www-form-urlencoded\r\n";
-//        $header .= "Content-Length: " . strlen($req) . "\r\n\r\n";
-//        $fp = fsockopen('ssl://www.sandbox.paypal.com', 443, $errno, $errstr, 30);
-//        $item_name = $_POST['item_name'];
-//        $item_number = $_POST['item_number'];
-//        $payment_status = $_POST['payment_status'];
-//        $payment_amount = $_POST['mc_gross'];
-//        $payment_currency = $_POST['mc_currency'];
-//        $txn_id = $_POST['txn_id'];
-//        $receiver_email = $_POST['receiver_email'];
-//        $payer_email = $_POST['payer_email'];
-//        parse_str($_POST['custom'], $custom);
-
-
-
-        die();
-
-        if (!$fp) {
             
-        } else {
-            fputs($fp, $header . $req);
-            while (!feof($fp)) {
-                $res = fgets($fp, 1024);
-                if (strcmp($res, "VERIFIED") == 0) {
-                    // vérifier que payment_status a la valeur Completed
-                    if ($payment_status == "Completed") {
-                        if ($email_account == $receiver_email) {
-                            /**
-                             * C'EST LA QUE TOUT SE PASSE
-                             * PS : tjrs penser à vérifier la somme !!
-                             */
-                            /**
-                             * FIN CODE
-                             */
-                        }
-                    } else {
-                        // Statut de paiement: Echec
-                    }
-                    exit();
-                } else if (strcmp($res, "INVALID") == 0) {
-                    // Transaction invalide
-                }
+            $data = $this->request->data();
+
+            
+            Log::write(LOG_ERR, "Data enoyée");
+            Log::write(LOG_ERR, $data);
+
+
+            $email_account = Configure::read('Paypal.email');
+
+
+            $req = 'cmd=_notify-validate';
+            foreach ($_POST as $key => $value) {
+                $value = urlencode(stripslashes($value));
+                $req .= "&$key=$value";
             }
-            fclose($fp);
+            
+            Log::write(LOG_ERR, "Données récupérées sur la variable post");
+            Log::write(LOG_ERR, $req);
+
+
+            $header = "POST /cgi-bin/webscr HTTP/1.0\r\n";
+            $header .= "Host: www." . Configure::read('Paypal.sandbox') . "paypal.com\r\n";
+            $header .= "Content-Type: application/x-www-form-urlencoded\r\n";
+            $header .= "Content-Length: " . strlen($req) . "\r\n\r\n";
+            $fp = fsockopen('ssl://www.' . Configure::Read(Configure::read('Paypal.sandbox')) . 'paypal.com', 443, $errno, $errstr, 30);
+            
+            
+            
+            $item_name = $data['item_name'];
+            $item_number = $data['item_number'];
+            $payment_status = $data['payment_status'];
+            $payment_amount = $data['mc_gross'];
+            $payment_tax = $data['tax'];
+            $payment_witout_tax = $payment_amount - $payment_tax;
+            $payment_amount = $data['mc_gross'];
+            $payment_currency = $data['mc_currency'];
+            $txn_id = $data['txn_id'];
+            $receiver_email = $data['receiver_email'];
+            $payer_email = $data['payer_email'];
+            parse_str($data['custom'], $custom);
+
+            
+
+
+            if (!$fp) {
+            Log::write(LOG_ERR, "Socket non ouvert");    
+            } else {
+                Log::write(LOG_ERR, "Socket ouvert");
+                fputs($fp, $header . $req);
+                while (!feof($fp)) {
+                    $res = fgets($fp, 1024);
+                    if (strcmp($res, "VERIFIED") == 0) {
+                        Log::write(LOG_ERR, "Action a clarifier verified");
+                        // vérifier que payment_status a la valeur Completed
+                        if ($payment_status == "Completed") {
+                            Log::write(LOG_ERR, "Paiement completed");
+                            
+                            if ($email_account == $receiver_email) {
+                                Log::write(LOG_ERR, "Email correspondent");
+                       
+                                if ($custom['action'] == 'subscribe') {
+                                    Log::write(LOG_ERR, "L'action est bien subscribe");
+                                    $duration = $custom['duration'];
+                                    $uid = $custom['uuid'];
+                                    if ($payment_witout_tax == Configure::read("Site.prices.$duration")) {
+                                        Log::write(LOG_ERR, "Le montant  correspond à un montant existant.");
+                                        $transaction_data = [
+                                            'transaction_name' => $txn_id,
+                                            'price' => $payment_amount,
+                                            'taxe' => "$payment_tax",
+                                            'user_id' => "$uid",
+                                        ];
+
+                                        $transactions = TableRegistry::get('Transactions');
+                                        $transaction = $transactions->newEntity($transaction_data);
+
+                                        $this->User->id = $uid;
+                                        $date = new DateTime();
+                                        $date->add(new DateInterval("P" . $duration . "M"));
+                                        $this->User->saveField('end_subcription', $date->format('Y-m-d H:i:s'));
+
+                                        //Log::write(LOG_ERR, $this->request->data);
+
+                                        if ($this->Users->save($user)) {
+                                            $this->Flash->success(__('The user has been saved.'));
+                                            return $this->redirect(['action' => 'index']);
+                                        } else {
+                                            $this->Flash->error(__('The user could not be saved. Please, try again.'));
+                                        }
+                                    }else{
+                                        Log::write(LOG_ERR, "Le montant ne correspond pas un montant existant.");
+                                    }
+                                    
+                                }else{
+                                    Log::write(LOG_ERR, "L'action n'est pas subscribe");
+                                }
+                            }else{
+                                Log::write(LOG_ERR, "Email ne correspondent pas");
+                            }
+                        } else {
+                            // Statut de paiement: Echec
+                            Log::write(LOG_ERR, "Paiement invalid");
+                            
+                        }
+                        //exit();
+                    } else if (strcmp($res, "INVALID") == 0) {
+                        // Transaction invalide
+                        Log::write(LOG_ERR, "Action a clarifier INVALID");
+                    }
+                }
+
+
+                fclose($fp);
+            }
         }
     }
 
