@@ -8,7 +8,7 @@ use Cake\Core\Configure;
 use Cake\Core\Configure\Engine\PhpConfig;
 use Cake\Routing\Router;
 use Cake\Log\Log;
-use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 
 /**
  * Paypals Controller
@@ -84,7 +84,7 @@ class PaypalsController extends AppController {
                 fputs($fp, $header . $req);
                 while (!feof($fp)) {
                     $res = fgets($fp, 1024);
-                    if (strcmp($res, "VERIFIED") == 0) {
+                    //if (strcmp($res, "VERIFIED") == 0) {
                         Log::write(LOG_ERR, "Action a clarifier verified");
                         // vérifier que payment_status a la valeur Completed
                         if ($payment_status == "Completed") {
@@ -138,10 +138,10 @@ class PaypalsController extends AppController {
                             
                         }
                         //exit();
-                    } else if (strcmp($res, "INVALID") == 0) {
+                    //} else if (strcmp($res, "INVALID") == 0) {
                         // Transaction invalide
                         Log::write(LOG_ERR, "Action a clarifier INVALID");
-                    }
+                    //}
                 }
 
 
