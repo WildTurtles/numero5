@@ -10,6 +10,7 @@ use Cake\Routing\Router;
 use Cake\Log\Log;
 use Cake\ORM\TableRegistry;
 use Cake\I18n\Date;
+use Cake\ORM\Table;
 
 /**
  * Paypals Controller
