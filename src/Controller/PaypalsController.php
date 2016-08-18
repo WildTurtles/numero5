@@ -111,9 +111,17 @@ class PaypalsController extends AppController {
                                         $transaction = $transactions->newEntity($transaction_data);
 
                                         $this->User->id = $uid;
-                                        //Log::write(LOG_ERR, "UUID de l'utilisateur ".$this->User->id);
+                                        Log::write(LOG_ERR, "UUID de l'utilisateur ".$this->User->id);
+                                       
                                         $date = new Date();
-                                        $date->add(new DateInterval("P" . $duration . "M"));
+                                        $date = Date::now();
+                                        Log::write(LOG_ERR, "Date avant".$date);
+                                        $date->modify('+'.$duration.' days');
+                                        Log::write(LOG_ERR, "Date après application de l'abo".$date);
+                                        
+                                        //$now->modify('+5 days');
+                                        
+                                        //$date->add(new DateInterval("P" . $duration . "M"));
                                         $this->User->saveField('end_subcription', $date->format('Y-m-d H:i:s'));
 
                                         //Log::write(LOG_ERR, $this->request->data);
