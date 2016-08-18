@@ -106,17 +106,22 @@ class PaypalsController extends AppController {
                                             'taxe' => "$payment_tax",
                                             'user_id' => "$uid",
                                         ];
-
+/*
                                         $transactions = TableRegistry::get('Transactions');
-                                        $transaction = $transactions->newEntity($transaction_data);
+                                        $transaction = $transactions->newEntity($transaction_data);*/
+                                        
+                                        $transaction = $this->Transactions->newEntity($transaction_data);
+                                        Log::write(LOG_ERR, "Transaction ".$user);
+                                       
+                                        $user = $this->Users->get($uid);
 
-                                        $this->User->id = $uid;
-                                        Log::write(LOG_ERR, "UUID de l'utilisateur ".$this->User->id);
+                                        
+                                        Log::write(LOG_ERR, "Utilisateur ".$user);
                                        
                                         $date = new Date();
                                         $date = Date::now();
                                         Log::write(LOG_ERR, "Date avant".$date);
-                                        $date->modify('+'.$duration.' days');
+                                        $date->modify('+'.$duration.' months');
                                         Log::write(LOG_ERR, "Date après application de l'abo".$date);
                                         
                                         //$now->modify('+5 days');
