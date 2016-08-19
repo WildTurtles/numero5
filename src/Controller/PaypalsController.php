@@ -77,7 +77,7 @@ class PaypalsController extends AppController {
             $receiver_email = $data['receiver_email'];
             $payer_email = $data['payer_email'];
             parse_str($data['custom'], $custom);
-
+            Log::write(LOG_ERR, $custom);
 
 
 
@@ -100,7 +100,7 @@ class PaypalsController extends AppController {
                             if ($custom['action'] == 'subscribe') {
                                 Log::write(LOG_ERR, "L'action est bien subscribe");
                                 $duration = $custom['duration'];
-                                $uid = $custom['uuid'];
+                                $uid = $custom['uid'];
                                 if ($payment_witout_tax == Configure::read("Site.prices.$duration")) {
                                     Log::write(LOG_ERR, "Le montant  correspond à un montant existant.");
 
