@@ -125,7 +125,7 @@ class PaypalsController extends AppController {
                                     Log::write(LOG_ERR, "Transaction " . $transaction);
 
                                     $user = new User();
-                                    $user = $users->get($uid);
+                                    $user = $this->Users->get($uid);
 
 
                                     Log::write(LOG_ERR, "Utilisateur " . $user);
