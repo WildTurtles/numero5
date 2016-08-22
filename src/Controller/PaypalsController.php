@@ -9,7 +9,7 @@ use Cake\Core\Configure\Engine\PhpConfig;
 use Cake\Routing\Router;
 use Cake\Log\Log;
 use Cake\ORM\TableRegistry;
-use Cake\I18n\Date;
+use Cake\I18n\Time;
 use App\Model\Entity\Transaction;
 use App\Model\Entity\User;
 use Cake\ORM\Table;
@@ -28,19 +28,19 @@ class PaypalsController extends AppController {
 
     public function success() {
         //$this->Flash->success(__('The subsciption has been saved.'));
-        //return $this->redirect(['action' => 'success']);
     }
 
     public function notify() {
 
         if ($this->request->is('post')) {
+            Log::write(LOG_ERR, "=====================================");
             Log::write(LOG_ERR, "Request is post");
 
 
             $data = $this->request->data();
 
 
-            Log::write(LOG_ERR, "Data enoyée");
+            Log::write(LOG_ERR, "Données envoyées");
             Log::write(LOG_ERR, $data);
 
 
@@ -62,8 +62,6 @@ class PaypalsController extends AppController {
             $header .= "Content-Type: application/x-www-form-urlencoded\r\n";
             $header .= "Content-Length: " . strlen($req) . "\r\n\r\n";
             $fp = fsockopen('ssl://www.' . Configure::Read(Configure::read('Paypal.sandbox')) . 'paypal.com', 443, $errno, $errstr, 30);
-
-
 
             $item_name = $data['item_name'];
             $item_number = $data['item_number'];
@@ -104,14 +102,6 @@ class PaypalsController extends AppController {
                                 if ($payment_witout_tax == Configure::read("Site.prices.$duration")) {
                                     Log::write(LOG_ERR, "Le montant  correspond à un montant existant.");
 
-                                    /*
-                                      $transactions = TableRegistry::get('Transactions');
-                                      $transaction = $transactions->newEntity($transaction_data); */
-
-                                    //$transaction = $this->Transactions->newEntity();
-
-
-
                                     $this->loadModel('Users');
                                     $this->loadModel('Transactions');
 
@@ -130,21 +120,26 @@ class PaypalsController extends AppController {
 
                                     Log::write(LOG_ERR, "Utilisateur " . $user);
 
-                                    $date = new Date();
-                                    $date = Date::now();
-                                    Log::write(LOG_ERR, "Date avant" . $date);
-                                    $date->modify('+' . $duration . ' months');
-                                    Log::write(LOG_ERR, "Date après application de l'abo" . $date);
+                                    $time = new Time();
 
-                                    //$now->modify('+5 days');
-                                    //$date->add(new DateInterval("P" . $duration . "M"));
-                                    $user->set('end_subcription', $date->format('Y-m-d H:i:s'));
+                                    if (!$user->subcribes()) {
+                                        $time = Time::now();
+                                    } else {
+                                        $time = $user->get('end_subcription');
+                                    }
+                                    Log::write(LOG_ERR, "Date avant : " . $time);
+                                    $time->i18nFormat('yyyy-MM-dd HH:mm:ss');
+                                    Log::write(LOG_ERR, "Mois a ajouter : " . $duration);
+                                    $time->addMonth($duration);
+                                    Log::write(LOG_ERR, "Date après application de l'abo : " . $time);
+
+
+                                    $user->set('end_subcription', $time);
 
                                     //Log::write(LOG_ERR, $this->request->data);
 
-                                    if ($this->Users->save($user)) {
-                                        $this->Flash->success(__('The user has been saved.'));
-                                        return $this->redirect(['action' => 'index']);
+                                    if ($this->Users->save($user) && $this->Transactions->save($transaction)) {
+                                           die();
                                     } else {
                                         $this->Flash->error(__('The user could not be saved. Please, try again.'));
                                     }
@@ -164,7 +159,7 @@ class PaypalsController extends AppController {
                     //exit();
                     //} else if (strcmp($res, "INVALID") == 0) {
                     // Transaction invalide
-                    Log::write(LOG_ERR, "Action a clarifier INVALID");
+                    //Log::write(LOG_ERR, "Action a clarifier INVALID");
                     //}
                 }
 

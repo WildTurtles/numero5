@@ -3,6 +3,7 @@ namespace App\Model\Entity;
 
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\ORM\Entity;
+use Cake\I18n\Time;
 
 /**
  * User Entity
@@ -52,5 +53,13 @@ class User extends Entity
     {
         $hasher = new DefaultPasswordHasher();
         return $hasher->hash($value);
+    }
+
+    public function subcribes(){
+        $result = true;
+        if($this->end_subcription < Time::now() ){
+            $result = false;
+        }
+        return $result;
     }
 }
