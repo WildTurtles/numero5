@@ -135,9 +135,9 @@ class UsersController extends AppController {
         $prices = Configure::read('Site.prices');
         $this->set('prices', $prices);
 
-        if (!$this->Auth->user('id')) {
-            throw new NotFoundException();
-        }
+//        if (!$this->Auth->user('id')) {
+//            throw new NotFoundException();
+//        }
 
 
         if (!empty($this->request->data)) {
@@ -166,9 +166,6 @@ class UsersController extends AppController {
                 return $this->redirect(['action' => 'subscribe']);
             }
             //return $this->redirect(['action' => 'subscribe']);
-        } else {
-            $this->Flash->error('There is trouble with your request, please retry later.');
-            return $this->redirect(['action' => 'subscribe']);
         }
     }
 
