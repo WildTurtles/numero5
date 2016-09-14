@@ -163,7 +163,7 @@ class UsersController extends AppController {
                 }
             } else {
                 $this->Flash->error('There is trouble with your request, please retry later.');
-                return $this->redirect(['action' => 'subscribe']);
+                //return $this->redirect(['action' => 'subscribe']);
             }
             //return $this->redirect(['action' => 'subscribe']);
         }
