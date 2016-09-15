@@ -5,7 +5,7 @@
 <?php foreach ($prices as $k => $v): ?>
    <input type="radio" name="duration" value="<?php echo $k?>">
    <label class="radio" for="<?php echo $v?>">
-   <?php echo __("{0,plural, =1{1 month} other{# mouths} },"
+   <?php echo __("{0,plural, =1{1 month} other{# months} },"
            . " {1,number,currency}  ",[$k,$v]);  ?>
    </label><br>
 <?php endforeach ?>
