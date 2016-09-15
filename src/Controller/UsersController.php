@@ -150,7 +150,7 @@ class UsersController extends AppController {
 
                 $price = number_format(Configure::read("Site.prices." . $duration), 2);
 
-                $item_name = __("Subscription for {0,plural, =1{1 month} other{# mouths} }  ", [$duration]);
+                $item_name = __("Subscription for {0,plural, =1{1 month} other{# months} }  ", [$duration]);
 
 
                 $transaction = new Transaction();
